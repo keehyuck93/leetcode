@@ -33,11 +33,4 @@ var isPalindrome = function(s) {
     return true;
 };
 
-console.log(isPalindrome("A man, a plan, a canal: Panama"));
-
-console.log(isPalindrome("race a car"));
-console.log(isPalindrome("asdfdsa"));
-console.log(isPalindrome("aaaaaa"));
-console.log(isPalindrome("0P"));
-
 

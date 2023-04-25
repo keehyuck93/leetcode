@@ -31,8 +31,3 @@ var longestConsecutive = function(nums) {
 
     return max;
 };
-
-console.log(longestConsecutive([100,4,200,1,3,2]));
-console.log(longestConsecutive([1,0,3,2,4,5,6,7,8,9]));
-console.log(longestConsecutive([0,-1]));
-console.log(longestConsecutive([0, 0]));
