@@ -8,7 +8,7 @@ var exist = function(board, word) {
 
     const m = board.length;
     const n = board[0].length;
-    console.log(m, n);
+    
     let visited = [];
     const  initializeVisited = () => {
         visited = Array.from(Array(m), () => new Array(n));
