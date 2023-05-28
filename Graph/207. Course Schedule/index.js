@@ -4,34 +4,50 @@
  * @return {boolean}
  */
 var canFinish = function(numCourses, prerequisites) {
-  const visited = [];
-  let canFinish = true;
+  const visited = new Array(numCourses).fill(false);
+	const recStack = new Array(numCourses).fill(false);
+	const adj = {};
 
-  for (let i=0; i < numCourses; i += 1) {
-    visited[i] = [];
-    for (let j=0; j < numCourses; j += 1) {
-        visited[i].push(-1);
-    }
-  }
-  prerequisites = prerequisites.sort((a,b) => b[1] - a[1]);
-  for (const [c, p] of prerequisites) {
-    visited[c][p] = 0;  
-  }
+	for (let [target, prerequisite] of prerequisites) {
+		if (adj[prerequisite]) {
+			adj[prerequisite].push(target);
+		} else {
+			adj[prerequisite] = [target];
+		}
+	}
 
-  const dfs = (c,p) => {
-    
-  }
+	const hasCycle = (index) => {
+		if (recStack[index]) return true;
+		if (visited[index]) return false;
 
-  for (const [c, p] of prerequisites) {
-    if (visited[c][p] === 0) {
-        dfs(c,p);
-    }
-  }
+		recStack[index] = true;
+		visited[index] = true;
+		const nextTargets = adj[index] || []
+		for (const target of nextTargets) {
+			if (hasCycle(target)) {
+				return true;
+			}
+		}
+		
+		recStack[index] = false;
 
-  return canFinish;
+		return false;
+	}
+
+	for (const key of Object.keys(adj)) {
+		if (hasCycle(key)) {
+			return false;
+		}
+	}
+
+	return true
 };
 
 // console.log(canFinish(3, [[0,2], [1,0], [2,1]]));
 // console.log(canFinish(3, [[0,2], [2,1]]));
-console.log(canFinish(6, [[1,0], [2,1], [3,2], [4,2], [5,2], [0,5]]))
-console.log(canFinish(3, [[1,0], [2,1]]))
+// console.log(canFinish(6, [[1,0], [2,1], [3,2], [4,2], [5,2], [0,5]]))
+// console.log(canFinish(3, [[1,0], [2,1]]))
+// console.log(canFinish(2, [[1,0], [0,1]]));
+// console.log(canFinish(20, [[0,10],[3,18],[5,5],[6,11],[11,14],[13,1],[15,1],[17,4]]));
+console.log(canFinish(5, [[1,4],[2,4],[3,1],[3,2]]));
+// console.log(canFinish(5, [[1,4],[2,4]]));
