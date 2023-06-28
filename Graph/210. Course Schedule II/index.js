@@ -4,37 +4,34 @@
  * @return {number[]}
  */
 var findOrder = function(numCourses, prerequisites) {
+    const set = new Set()
     const adj = {};
-    const visited = new Array(numCourses).fill(false);
-
-    for (let i=0; i < numCourses; i +=1) {
-        adj[i] = [];
+    for (const [take, required] of prerequisites) {
+        adj[required] = adj[required] ? [...adj[required], take]: [take]
+        set.add(take);
     }
+    console.log(adj)
+    if (set.size === numCourses) return []
 
-    for (const [course, prerequisite] of prerequisites) {
-        adj[prerequisite].push(course);
-    }
-
-    const hasCycle = (visit) => {
-        console.log(visit);
-        if (visited[visit]) return true;
-        visited[visit] = true;
-
-        const courses = adj[visit] || []
-        for (const course of courses) {
-            if (hasCycle(course)) {
-                return true
+    const queue = []
+    const result = new Set()
+    for (const [take, required] of prerequisites) {
+        if (!set.has(required)) {
+            queue.push(...adj[required]);
+            result.add(required);
+            
+            while(queue.length > 0) {
+                const popped = queue.shift();
+                
+                if (!result.has(popped)) {
+                    result.add(popped);
+                    queue.push(...(adj[popped] || []));
+                }
             }
         }
-
-        visited[visit] = false;
-        return false;
     }
-
-    // for (const key of Object.keys(adj)) {
-	// 	hasCycle(key);
-	// }
-    hasCycle(0)
+    
+    return Array.from(result);
 };
 
-findOrder(4, [[1,0],[2,0],[3,1],[3,2]]);
+console.log(findOrder(4, [[1,0],[2,0],[3,1],[3,2]]));
