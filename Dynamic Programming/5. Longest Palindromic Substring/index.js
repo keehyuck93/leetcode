@@ -3,37 +3,34 @@
  * @return {string}
  */
 var longestPalindrome = function(s) {
-    const isPalindrome = (str) => {
-        const size = str.length;
+    const getPalindrome = (l, r) => {
+        if (s[l] !== s[r]) return "";
 
-        for (let i = 0; i < size / 2; i += 1) {
-            if (str[i] !== str[size-1-i]) {
-                return false;
-            }
+        while(l - 1 >= 0 && r + 1 < s.length && s[l-1] === s[r+1]) {
+            l -= 1;
+            r += 1;
         }
-        return true;
+
+        return s.slice(l, r + 1);
     }
 
-    let longestSize = 1;
-    let longest = s[0];
-
-    if (s.length === 1) return longest;
-
-    for (let l = 0; l < s.length; l += 1) {
-        let str = s.slice(l, longestSize);
-        console.log(str)
-        for (let r = longestSize; r < s.length; r += 1) {
-            str = str.concat(s[r]);
-
-            if (isPalindrome(str)) {
-                longest = str;
-                longestSize = str.length;
-            }
+    let result = ""
+    for (let i=0; i < s.length; i += 1) {
+        const palindrome = getPalindrome(i, i);
+        if (palindrome.length > result.length) {
+            result = palindrome
         }
     }
 
-    return longest;
+    for (let i=0; i < s.length - 1; i += 1) {
+        const palindrome = getPalindrome(i, i+1);
+        if (palindrome.length > result.length) {
+            result = palindrome
+        }
+    }
+    
+    return result;
 };
 
-console.log(longestPalindrome("babaa"));
+console.log(longestPalindrome("abaa"));
 // b ba bab baba babad abad
